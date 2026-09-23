@@ -10,6 +10,8 @@ O fluxo de negocio envolve tres grupos principais:
 - aprovadores
 - executores
 
+O sistema tambem possui um perfil administrativo para gerenciar o ciclo de acesso dos usuarios.
+
 No MVP, a aplicacao nao executa a transacao financeira em si. Ela recebe a solicitacao, conduz o fluxo de aprovacao, registra auditoria, notifica os envolvidos e despacha a solicitacao aprovada para o grupo executor.
 
 ## Direcao Arquitetural
@@ -41,10 +43,14 @@ Recomendacao adicional desde o inicio:
 
 - RBAC por perfil e alcada de aprovacao
 
+No MVP, os perfis sao uma propriedade do proprio usuario.
+
 ## Escopo do MVP
 
 Incluido no MVP:
 
+- cadastro interno de usuarios por link temporario
+- validacao administrativa de usuarios
 - criacao de solicitacoes financeiras
 - fluxo de aprovacao com dois aprovadores
 - rejeicao de solicitacoes
@@ -76,6 +82,13 @@ Persistencia recomendada para o inicio:
 
 - Firestore
 
+Uso sugerido da persistencia operacional:
+
+- usuarios com status `active` ou `inactive`
+- perfis associados ao usuario
+- solicitacoes financeiras e suas transicoes
+- eventos de auditoria
+
 Armazenamento complementar recomendado:
 
 - Cloud Storage para anexos, exportacoes e consolidados
@@ -95,6 +108,20 @@ Alternativa caso o sistema precise cedo de consultas relacionais mais fortes, jo
 7. Todos os eventos relevantes ficam registrados para auditoria e relatorios.
 
 ## Papeis de Acesso
+
+### Admin
+
+Pode:
+
+- gerar link de cadastro
+- listar usuarios
+- validar usuario associando perfis e ativando acesso
+- desativar usuario
+- consultar trilha administrativa
+
+Nao pode automaticamente:
+
+- substituir regras de negocio de aprovacao sem possuir tambem o perfil adequado
 
 ### Solicitante
 
@@ -187,6 +214,12 @@ Fallback recomendado para eventos criticos:
 
 A superficie minima da API deve contemplar:
 
+- geracao de link de cadastro
+- cadastro por token valido
+- listagem de usuarios
+- validacao de usuario
+- desativacao de usuario
+- consulta de perfil do usuario autenticado
 - criacao de solicitacao
 - listagem de solicitacoes
 - consulta de detalhes da solicitacao
@@ -201,11 +234,19 @@ Todos os endpoints de escrita devem exigir:
 - autorizacao por papel
 - controle de idempotencia
 
+Observacoes sobre acesso:
+
+- concluir cadastro nao concede acesso automaticamente
+- acesso ao sistema exige usuario `active`
+- acesso ao sistema exige ao menos um perfil associado
+
 ## Telas Esperadas no MVP
 
 A aplicacao deve expor ao menos as seguintes telas ou paginas:
 
 - login e acesso autenticado
+- listagem de usuarios para admin
+- validacao de usuario para admin
 - dashboard inicial por perfil
 - criacao de solicitacao financeira
 - listagem de solicitacoes
@@ -218,6 +259,8 @@ A aplicacao deve expor ao menos as seguintes telas ou paginas:
 Resumo funcional por tela:
 
 - Dashboard: exibir pendencias, itens recentes e atalhos conforme o perfil do usuario.
+- Gestao de usuarios: permitir listar usuarios, inspecionar status, perfis e ativar acesso.
+- Validacao de usuario: permitir ao admin definir perfis e ativar o usuario em uma unica acao.
 - Criacao de solicitacao: permitir abertura de nova solicitacao com dados obrigatorios e anexos, quando houver.
 - Listagem: permitir filtro por status, periodo, solicitante e responsavel.
 - Detalhe: mostrar historico, aprovacoes, auditoria e dados completos da solicitacao.
@@ -252,13 +295,14 @@ Controles minimos:
 
 Identidade recomendada:
 
-- Identity Platform ou integracao com IdP corporativo via OIDC
+- cadastro interno no MVP, com evolucao futura para Identity Platform ou integracao com IdP corporativo via OIDC
 
-Os tokens devem carregar, no minimo:
+No MVP, o controle de acesso deve considerar, no minimo:
 
-- papel do usuario
-- nivel de alcada
 - identificador do usuario
+- status `active` ou `inactive`
+- perfis do usuario
+- nivel de alcada, quando aplicavel para aprovacao
 
 ## Estrategia de Validacao
 
@@ -276,6 +320,7 @@ A solucao deve ser validada com foco em:
 
 ### Fase 1: Dominio e Seguranca
 
+- definir fluxo de cadastro e validacao administrativa
 - definir workflow de negocio
 - definir regras de aprovacao
 - definir papeis e alcadas
@@ -315,4 +360,8 @@ Os proximos refinamentos recomendados sao:
 1. detalhar o modelo de dados e o state machine
 2. detalhar os endpoints e contratos de evento
 3. detalhar a arquitetura GCP com fluxos entre componentes
+
+## Documentacao Complementar
+
+- Casos de uso do MVP: [docs/use-cases.md](/home/thiago-slopes/workspace/ce-transactions/docs/use-cases.md)
 
