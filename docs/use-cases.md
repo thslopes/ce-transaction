@@ -573,3 +573,7 @@ O primeiro slice recomendado para implementacao e testes de negocio, depois diss
 - consolidar estado final como `approved`
 - impedir aprovacao duplicada
 - impedir aprovacao fora da alcada
+
+## Documentacao Complementar
+
+- Contratos de acesso e administracao: [docs/access-api.md](/home/thiago-slopes/workspace/ce-transactions/docs/access-api.md)

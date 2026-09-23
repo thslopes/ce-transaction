@@ -364,4 +364,5 @@ Os proximos refinamentos recomendados sao:
 ## Documentacao Complementar
 
 - Casos de uso do MVP: [docs/use-cases.md](/home/thiago-slopes/workspace/ce-transactions/docs/use-cases.md)
+- Contratos de acesso e administracao: [docs/access-api.md](/home/thiago-slopes/workspace/ce-transactions/docs/access-api.md)
 
