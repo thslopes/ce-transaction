@@ -201,6 +201,31 @@ Todos os endpoints de escrita devem exigir:
 - autorizacao por papel
 - controle de idempotencia
 
+## Telas Esperadas no MVP
+
+A aplicacao deve expor ao menos as seguintes telas ou paginas:
+
+- login e acesso autenticado
+- dashboard inicial por perfil
+- criacao de solicitacao financeira
+- listagem de solicitacoes
+- detalhe de solicitacao
+- fila de aprovacoes para aprovadores
+- fila de execucao para executores
+- relatorios operacionais
+- preferencias de notificacao
+
+Resumo funcional por tela:
+
+- Dashboard: exibir pendencias, itens recentes e atalhos conforme o perfil do usuario.
+- Criacao de solicitacao: permitir abertura de nova solicitacao com dados obrigatorios e anexos, quando houver.
+- Listagem: permitir filtro por status, periodo, solicitante e responsavel.
+- Detalhe: mostrar historico, aprovacoes, auditoria e dados completos da solicitacao.
+- Fila de aprovacoes: destacar itens pendentes de decisao dentro da alcada do aprovador.
+- Fila de execucao: mostrar apenas itens totalmente aprovados e prontos para despacho ou acompanhamento operacional.
+- Relatorios: consolidar volume, tempo medio, pendencias e backlog.
+- Preferencias de notificacao: permitir controle de permissao, dispositivo e fallback de notificacao.
+
 ## Relatorios do MVP
 
 Os relatorios iniciais devem cobrir:
