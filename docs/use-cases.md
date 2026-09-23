@@ -23,6 +23,7 @@ Este documento detalha os principais casos de uso do MVP da aplicacao de aprovac
 - O cadastro nao concede acesso automatico ao sistema.
 - O acesso efetivo exige usuario com `status = active` e ao menos um perfil associado.
 - Os perfis sao uma propriedade do usuario.
+- O primeiro usuario `admin` do sistema e criado por bootstrap tecnico, fora do fluxo publico de cadastro.
 
 ## UC-00 Gerar Link de Cadastro
 
@@ -38,6 +39,7 @@ Permitir que o admin gere um link temporario para que um candidato realize seu c
 
 - O admin esta autenticado.
 - O admin possui perfil `admin`.
+- Existe ao menos um `admin` inicial previamente criado por bootstrap tecnico.
 
 ### Fluxo principal
 
@@ -539,25 +541,30 @@ Permitir visibilidade gerencial sobre volume, status e backlog do processo.
 
 ## Ordem Sugerida de Implementacao em Baby-Steps
 
-1. UC-00 Gerar Link de Cadastro
-2. UC-01 Realizar Cadastro
-3. UC-02 Listar Usuarios
-4. UC-03 Validar Usuario
-5. UC-05 Autenticar Usuario
-6. UC-06 Criar Solicitacao Financeira
-7. UC-07 Aprovar Solicitacao Dentro da Alcada
-8. UC-09 Consolidar Dupla Aprovacao
-9. UC-08 Rejeitar Solicitacao
-10. UC-10 Enviar Solicitacao Aprovada para Execucao
-11. UC-11 Consultar Fila de Aprovacao
-12. UC-12 Consultar Fila de Execucao
-13. UC-13 Consultar Relatorio Operacional
+1. bootstrap tecnico do primeiro `admin`
+2. UC-05 Autenticar Usuario
+3. UC-00 Gerar Link de Cadastro
+4. UC-01 Realizar Cadastro
+5. UC-02 Listar Usuarios
+6. UC-03 Validar Usuario
+7. UC-04 Desativar Usuario
+8. UC-06 Criar Solicitacao Financeira
+9. UC-07 Aprovar Solicitacao Dentro da Alcada
+10. UC-09 Consolidar Dupla Aprovacao
+11. UC-08 Rejeitar Solicitacao
+12. UC-10 Enviar Solicitacao Aprovada para Execucao
+13. UC-11 Consultar Fila de Aprovacao
+14. UC-12 Consultar Fila de Execucao
+15. UC-13 Consultar Relatorio Operacional
 
 ## Primeiro Slice Recomendado
 
 O primeiro slice recomendado para implementacao e testes de acesso e administracao e:
 
-- admin gera link temporario de cadastro
+- existe um `admin` inicial criado por bootstrap tecnico
+- `admin` consegue autenticar
+- `admin` consegue acessar uma rota protegida de perfil proprio
+- `admin` consegue gerar link temporario de cadastro
 - candidato conclui cadastro com nome, e-mail, telefone e senha
 - usuario nasce `inactive`
 - admin valida usuario em acao unica, definindo perfis e ativando acesso

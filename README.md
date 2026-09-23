@@ -49,6 +49,7 @@ No MVP, os perfis sao uma propriedade do proprio usuario.
 
 Incluido no MVP:
 
+- bootstrap tecnico do primeiro usuario `admin`
 - cadastro interno de usuarios por link temporario
 - validacao administrativa de usuarios
 - criacao de solicitacoes financeiras
@@ -296,6 +297,10 @@ Controles minimos:
 Identidade recomendada:
 
 - cadastro interno no MVP, com evolucao futura para Identity Platform ou integracao com IdP corporativo via OIDC
+
+Bootstrap inicial recomendado:
+
+- o primeiro usuario `admin` deve ser criado por mecanismo tecnico controlado, fora das rotas publicas
 
 No MVP, o controle de acesso deve considerar, no minimo:
 

@@ -4,6 +4,31 @@
 
 Este documento define os contratos minimos das rotas de cadastro, autenticacao e administracao de usuarios para o MVP. O foco e preparar a implementacao incremental e os primeiros testes de contrato.
 
+## Bootstrap do Primeiro Admin
+
+Antes de qualquer rota administrativa autenticada existir na pratica, o sistema precisa contar com ao menos um usuario `admin` inicial.
+
+Decisao para o MVP:
+
+- o primeiro `admin` nao nasce por rota publica
+- o primeiro `admin` e criado por mecanismo tecnico de bootstrap
+- esse mecanismo pode ser um seed local, script administrativo ou comando interno de inicializacao
+
+Campos minimos do primeiro `admin`:
+
+- `name`
+- `email`
+- `phone`
+- `password_hash`
+- `status = active`
+- `profiles = ["admin"]`
+
+Regras:
+
+- o bootstrap deve ser usado apenas para o primeiro acesso administrativo
+- depois disso, a administracao normal acontece pelas rotas da API
+- o bootstrap deve gerar auditoria quando isso for viavel no ambiente
+
 ## Convencoes Gerais
 
 - Formato: JSON sobre HTTPS.
@@ -179,6 +204,7 @@ Authorization: Bearer <access_token>
 
 - Usuario `inactive` nao autentica com sucesso.
 - Usuario sem perfis nao autentica com sucesso.
+- Usuario bootstrapado como `admin` segue exatamente as mesmas regras de autenticacao dos demais usuarios.
 
 ### Erros esperados
 
@@ -355,6 +381,7 @@ Authorization: Bearer <access_token>
 
 ## Ordem Recomendada de Testes de Contrato
 
+0. bootstrap tecnico do primeiro `admin`
 1. `POST /users/registration-link`
 2. `POST /signup`
 3. `GET /users`
@@ -363,3 +390,15 @@ Authorization: Bearer <access_token>
 6. `GET /me`
 7. `POST /users/{id}/deactivate`
 8. `POST /users/{id}/reactivate`
+
+## Primeiro Slice Recomendado de Testes
+
+O primeiro slice recomendando para acesso e autenticacao e:
+
+1. existe um `admin` inicial criado por bootstrap tecnico
+2. `POST /login` autentica esse `admin`
+3. o token e retornado no header `Authorization`
+4. `GET /me` funciona com esse token
+5. `POST /users/registration-link` aceita esse token e retorna `201 Created`
+6. uma chamada sem token retorna `401 Unauthorized`
+7. uma chamada com usuario sem perfil `admin` retorna `403 Forbidden`
